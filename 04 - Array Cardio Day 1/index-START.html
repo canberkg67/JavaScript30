@@ -39,27 +39,86 @@
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
 
+      const fifteen = inventors.filter(inventor => (inventor.year >= 1500 && inventor.year < 1600));
+      //bu kod,function ve if-return eklenerek de yazılabilir;ancak filter metodu zaten true veya false döndürür ve true ise kabul eder.o yüzden bu yol daha kısa.
+      //burada inventors arrayindaki her bir eleman-obje inventor adında ele alınıyor ve year property'si 1500 ile 1600 arasında olanlar filtreleniyor.
+
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
+
+      const fullNames = inventors.map(inventor => `${inventor.first} ${inventor.last}`);
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
 
+      const birthDate = inventors.sort((a, b) => a.year - b.year);
+
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
+        //hedef,mucitlerin toplam yaşlarını hesaplamak.
+      const totalYears = inventors.reduce((total, inventor) => {
+        return total + (inventor.passed - inventor.year);
+      }, 0);
+      //total yerine ilk değeri 0 olarak yazmasaydık hata alırdık.
 
     // 5. Sort the inventors by years lived
+        //hedef,doğum ve ölüm yıllarına göre yaşlarını hesaplayıp sıralamak.
+      const oldest = inventors.sort((a, b) => {
+        const lastInventor = a.passed - a.year;
+        const nextInventor = b.passed - b.year;
+        return lastInventor > nextInventor ? -1 : 1;
+      });
+      //burada lastInventor a, nextInventor ise b . Eğer lastInventor nextInventor'dan büyükse -1 döndürürüz, böylece a önce gelir. Eğer değilse 1 döndürürüz, böylece b önce gelir. Bu şekilde yaşlarına göre sıralama yapmış oluruz.
+      //sort için döndürülen değerler 0, 1 veya -1 olabilir. 0 ise sıralama değişmez, 1 ise b önce gelir, -1 ise a önce gelir.
+      //burada 1 ve -1 yerine 1000 ve -1000 yazsaydık da aynı sonuç olurdu. önemli olan poz veya neg olması.
+
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
 
+      /*bu kodu vikipedi sayfası açık iken console'da çalıştırmalıyız. yoksa kendi dosyalarımızda o class olmadığı için hata alırız.
+      //vikipedi'de konsolda incele dediğimizde her bir maddenin ana class'nın "mw-category" olduğunu görüyoruz.
+      bu class'a göre seçim yapıp maddelerin adında "de" geçenleri filtreleyebiliriz. */
+
+      const category = document.querySelector('.mw-category'); //bu kategorideki her bir linki yani a'yı seçmeliyiz sonra.
+      const links = Array.from(category.querySelectorAll('a'));  //querySelectorAll ile seçilen elemanlar NodeList olarak gelir. Array.from ile bunu array'e çeviriyoruz.
+      const de = links
+                    .map(link => link.textContent) //textContent ile linkin içindeki yazıyı alıyoruz.
+                    .filter(streetName => streetName.includes('de'));   //map ve filter metodları arrayler üzerinde çalışır. nodelist'de çalışmaz.
+                                                                        //includes metodu ile string içinde "de" geçenleri filtreliyoruz.
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
 
+    const alpha = people.sort((lastOne, nextOne) => {
+      const [aLast, aFirst] = lastOne.split(', '); //split ile virgülden sonra boşluk olan yerden ayırıyoruz. destructuring ile aLast ve aFirst değişkenlerine atıyoruz.
+      const [bLast, bFirst] = nextOne.split(', ');
+      return aLast > bLast ? 1 : -1; //aLast bLast'dan büyükse 1 döndürürüz, böylece b önce gelir. Eğer değilse -1 döndürürüz, böylece a önce gelir.
+    });
+
+    /*
+    Destcructuring Assignment'ın daha basit bir örneği:
+    const colors = ["red", "green"];
+    const [first, second] = colors;
+    burada first değişkeni "red" değerini, second değişkeni ise "green" değerini alır. yani index 0 ve 1 gibi davranır first ve second.
+
+    üç elemanlı bir örnek:
+    const colors = ["red", "green", "blue"];
+    const [first, , third] = colors;
+    burada first değişkeni "red" değerini, third değişkeni ise "blue" değerini alır. ikinci elemanı atlamak için araya virgül koyuyoruz.
+    */
+
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    const transportation = data.reduce((obj, item) => {
+      if (!obj[item]) { //eğer objede item yoksa
+        obj[item] = 0; //item'ı 0 olarak başlatıyoruz.
+      }
+      obj[item]++; //item'ı 1 arttırıyoruz.
+      return obj; //objeyi döndürüyoruz.
+    }, {}); //başlangıçta boş bir obje veriyoruz.
 
   </script>
 </body>
