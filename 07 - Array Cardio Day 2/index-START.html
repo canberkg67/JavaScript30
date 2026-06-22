@@ -26,16 +26,62 @@
     ];
 
     // Some and Every Checks
-    // Array.prototype.some() // is at least one person 19 or older?
-    // Array.prototype.every() // is everyone 19 or older?
+    // 1- Array.prototype.some() // is at least one person 19 or older?
+    const isAdult = people.some(function(person) {
+      const currentYear = (new Date()).getFullYear(); //mevcut yılı alır
+      if (currentYear - person.year >= 19) {
+        return true;
+      }
+    });
 
-    // Array.prototype.find()
+      console.log({isAdult}); //object basar. {isAdult: true}
+      console.log(isAdult); //sadece true basar.
+
+    // some() dizideki her bir indexi fonksiyona göre kontrol eder.
+    // şartı sağlayan sadece bir tane olması da yeterli true döndürmek için.
+    // some ilk true döndüğü anda durur;map ise tüm elemanlara fonksiyonu uygular.
+    // map ve filter fonku uygulayarak yeni dizi döndürür;some ve every ise true-false döndürür.
+
+    // 2- Array.prototype.every() // is everyone 19 or older?
+
+    //every'de ise bütün elementler koşulu sağlamazsa false döner. bir tane yeterli değil.
+    //yukarıdakinin arrow fonklu hali gibi yazalım.
+
+    const allAdults = people.every(person => ((new Date()).getFullYear()) - person.year >= 19);
+    console.log({allAdults});
+
+    // 3-  Array.prototype.find()
     // Find is like filter, but instead returns just the one you are looking for
     // find the comment with the ID of 823423
 
-    // Array.prototype.findIndex()
+    //find,bulduğu ilkini döndürür. birden fazla varsa bile ilki döner sadece.
+
+    const wanted = comments.find(function(comment){
+      if(comment.id === 823423){
+        return true;
+      }
+    })
+
+    console.log(wanted);
+
+    // 4- Array.prototype.findIndex()
     // Find the comment with this ID
     // delete the comment with the ID of 823423
+
+    //find,o id'ye sahip olan object'i döndürür.findIndex ise onun arraydaki eleman index'ini döndürür.0,1,2...
+    //yoruma ulaşmak için find,yorumu silmek için findIndex kullan.
+
+    const index = comments.findIndex(comment => comment.id === 823423);
+    console.log(index);
+
+    comments.splice(index,1);
+
+    //array.splice(startIndex, deleteCount);
+    //başlanılacak index ve silinecek eleman sayısı.
+
+
+    //console.table diye bir şey var. hem array hem object ile çalışır.
+    //onlar tablo halinde gösterir,düz satır yerine.
 
   </script>
 </body>
